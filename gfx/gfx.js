@@ -1,5 +1,5 @@
 const gfxWorks = [
-  { id: 1, title: "Jingliu", file: "gfx/jingliu.jpg", category: "poster" },
-  { id: 2, title: "Suisei", file: "gfx/suisei.jpg", category: "fanart" },
+  { id: 1, title: "Rio (BLuearchive)", file: "gfx/RIoooo.png", category: "poster" },
+  { id: 2, title: "Bronya", file: "gfx/Bronya mar 2026.png", category: "poster" },
   // dst...
 ]
