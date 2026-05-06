@@ -1,234 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>uryaesque</title>
+  <link rel="icon" href="logo.gif" type="image/gif">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <script src="gfx/gfx.js"></script>
+  <script src="edu/edu.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #fff6fa; min-height: 100vh; }
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
-* { box-sizing: border-box; margin: 0; padding: 0; }
-#ury-root { font-family: 'Nunito', sans-serif; min-height: 600px; background: #fff6fa; position: relative; overflow: hidden; }
-.deco-circle { position: absolute; border-radius: 50%; pointer-events: none; }
+    #overlay { position: fixed; inset: 0; background: #ffb6c1; z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    #overlay.flash { opacity: 1; pointer-events: all; }
 
-header#ury-header {
-  display: none;
-  position: sticky; top: 0; z-index: 100;
-  background: #fce4ef;
-  border-bottom: 1.5px solid #f7c6d8;
-  padding: 10px 20px;
-  align-items: center; justify-content: space-between; gap: 12px;
-}
-header#ury-header.visible { display: flex; }
+    #ury-header { display: none; position: sticky; top: 0; z-index: 100; background: #fce4ef; border-bottom: 1.5px solid #f7c6d8; padding: 10px 20px; align-items: center; justify-content: space-between; }
+    #ury-header.visible { display: flex; }
+    .header-logo { font-family: 'Playfair Display', serif; font-style: italic; font-size: 16px; color: #c45a8a; cursor: pointer; font-weight: 700; }
+    .header-nav { display: flex; gap: 8px; }
+    .nav-btn { border: none; background: #f0b8ce; color: #6b1f3c; border-radius: 20px; padding: 6px 16px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.2s; }
+    .nav-btn:hover { background: #ffb6c1; }
+    .nav-btn.active { background: #c45a8a; color: #fff; }
+    .nav-btn.home-btn { background: #fce4ef; color: #c45a8a; border: 1.5px solid #f0b8ce; }
+    .nav-btn.home-btn:hover { background: #f0b8ce; }
 
-.header-logo {
-  font-family: 'Playfair Display', serif; font-style: italic;
-  font-size: 16px; color: #c45a8a; cursor: pointer; font-weight: 700;
-}
+    #scene-hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 2rem; position: relative; overflow: hidden; }
+    .deco-circle { position: absolute; border-radius: 50%; pointer-events: none; }
+    .deco-1 { width: 220px; height: 220px; background: #ffd6e7; opacity: 0.4; top: -70px; right: -50px; }
+    .deco-2 { width: 130px; height: 130px; background: #ffb6c1; opacity: 0.25; bottom: 60px; left: -40px; }
+    .deco-3 { width: 80px; height: 80px; background: #ffd6e7; opacity: 0.3; top: 80px; left: 30px; }
 
-.header-nav { display: flex; gap: 8px; }
+    .hero-logo-wrap { margin-bottom: 1.2rem; position: relative; display: flex; align-items: center; justify-content: center; }
+    .hero-logo-img { width: 110px; height: 110px; border-radius: 50%; border: 3px solid #ffb6c1; background: #ffd6e7; display: flex; align-items: center; justify-content: center; font-size: 3rem; overflow: hidden; }
+    .hero-logo-img img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-logo-ring { width: 126px; height: 126px; border-radius: 50%; border: 2px dashed #f7c6d8; position: absolute; animation: spin 12s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-.nav-btn {
-  border: none;
-  background: #f0b8ce;
-  color: #6b1f3c;
-  border-radius: 20px;
-  padding: 6px 16px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 13px; font-weight: 800;
-  cursor: pointer; transition: all 0.2s;
-}
-.nav-btn:hover { background: #ffb6c1; }
-.nav-btn.active { background: #c45a8a; color: #fff; }
-.nav-btn.home-btn { background: #fce4ef; color: #c45a8a; border: 1.5px solid #f0b8ce; }
-.nav-btn.home-btn:hover { background: #f0b8ce; }
+    .hero-name { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; color: #c45a8a; text-align: center; margin-bottom: 4px; }
+    .hero-handle { font-size: 0.85rem; color: #d4a0b5; margin-bottom: 0.8rem; letter-spacing: 1px; }
+    .hero-bio { font-size: 0.9rem; color: #a06080; text-align: center; max-width: 280px; line-height: 1.7; margin-bottom: 1.6rem; }
 
-#scene-hero {
-  min-height: 600px; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 3rem 2rem; position: relative;
-}
-#scene-hero .deco-circle:nth-child(1) { width: 200px; height: 200px; background: #ffd6e7; opacity: 0.4; top: -60px; right: -40px; }
-#scene-hero .deco-circle:nth-child(2) { width: 120px; height: 120px; background: #ffb6c1; opacity: 0.25; bottom: 40px; left: -30px; }
+    .social-links { display: flex; gap: 10px; margin-bottom: 2.2rem; flex-wrap: wrap; justify-content: center; }
+    .social-btn { background: #ffb6c1; border: none; border-radius: 20px; padding: 8px 18px; font-size: 13px; font-family: 'Nunito', sans-serif; font-weight: 800; color: #6b1f3c; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; text-decoration: none; }
+    .social-btn:hover { background: #f79ab5; transform: translateY(-2px); }
+    .social-btn.disabled { background: #e0e0e0; color: #aaa; cursor: not-allowed; pointer-events: none; }
 
-.hero-logo-wrap { margin-bottom: 1.2rem; position: relative; }
-.hero-logo-img {
-  width: 110px; height: 110px; border-radius: 50%;
-  border: 3px solid #ffb6c1; background: #ffd6e7;
-  display: flex; align-items: center; justify-content: center; font-size: 3rem;
-}
-.hero-logo-ring {
-  width: 122px; height: 122px; border-radius: 50%;
-  border: 2px dashed #f7c6d8;
-  position: absolute; top: -6px; left: -6px;
-  animation: spin 12s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
+    .room-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .room-btn { background: #fff; border: 2px solid #f7c6d8; border-radius: 18px; padding: 1.4rem 2rem; cursor: pointer; text-align: center; transition: all 0.25s; min-width: 140px; }
+    .room-btn:hover { border-color: #ffb6c1; transform: translateY(-4px); box-shadow: 0 10px 24px rgba(255,182,193,0.35); }
+    .room-btn-icon { font-size: 2rem; margin-bottom: 8px; }
+    .room-btn-label { font-size: 0.9rem; font-weight: 800; color: #c45a8a; text-transform: uppercase; letter-spacing: 0.5px; }
+    .room-btn-sub { font-size: 0.72rem; color: #d4a0b5; margin-top: 3px; }
 
-.hero-name { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: #c45a8a; margin-bottom: 2px; text-align: center; }
-.hero-handle { font-size: 0.85rem; color: #d4a0b5; margin-bottom: 0.8rem; letter-spacing: 1px; }
-.hero-bio { font-size: 0.9rem; color: #a06080; text-align: center; max-width: 280px; line-height: 1.6; margin-bottom: 1.4rem; }
+    #scene-content { display: none; opacity: 0; padding: 2rem; transition: opacity 0.4s; }
+    #scene-content.visible { display: block; opacity: 1; }
+    .section-panel { display: none; }
+    .section-panel.active { display: block; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: #c45a8a; margin-bottom: 4px; }
+    .section-sub { font-size: 0.85rem; color: #d4a0b5; margin-bottom: 1.8rem; }
 
-.social-links { display: flex; gap: 10px; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center; }
+    .gfx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+    .gfx-card { background: #fff; border: 1.5px solid #f7c6d8; border-radius: 14px; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+    .gfx-card:hover { transform: scale(1.04); box-shadow: 0 8px 20px rgba(255,182,193,0.3); }
+    .gfx-thumb { width: 100%; height: 110px; background: linear-gradient(135deg, #ffd6e7, #ffb6c1); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .gfx-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .gfx-info { padding: 8px 12px 10px; }
+    .gfx-name { font-size: 0.8rem; font-weight: 700; color: #c45a8a; }
+    .gfx-cat { font-size: 0.68rem; color: #d4a0b5; text-transform: uppercase; letter-spacing: 0.3px; }
+    .gfx-more { border: 2px dashed #f7c6d8; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 150px; cursor: pointer; transition: all 0.2s; gap: 6px; }
+    .gfx-more:hover { border-color: #ffb6c1; }
+    .gfx-more span:first-child { font-size: 1.5rem; }
+    .gfx-more span:last-child { font-size: 0.75rem; color: #d4a0b5; font-weight: 700; }
 
-.social-btn {
-  background: #ffb6c1;
-  border: none;
-  border-radius: 20px;
-  padding: 8px 16px;
-  font-size: 13px;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 800;
-  color: #6b1f3c;
-  cursor: pointer;
-  display: flex; align-items: center; gap: 6px;
-  transition: all 0.2s;
-}
-.social-btn:hover { background: #f79ab5; transform: translateY(-1px); }
+    #gfx-popup { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.75); align-items: center; justify-content: center; padding: 1rem; }
+    #gfx-popup.open { display: flex; }
+    .popup-box { background: #fff6fa; border-radius: 20px; max-width: 500px; width: 100%; overflow: hidden; position: relative; }
+    .popup-img-wrap { width: 100%; background: #ffd6e7; display: flex; align-items: center; justify-content: center; min-height: 280px; }
+    .popup-img-wrap img { width: 100%; max-height: 380px; object-fit: contain; }
+    .popup-info { padding: 1.2rem 1.4rem; }
+    .popup-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #c45a8a; margin-bottom: 4px; }
+    .popup-cat { font-size: 0.78rem; color: #d4a0b5; text-transform: uppercase; letter-spacing: 0.5px; }
+    .popup-close { position: absolute; top: 12px; right: 12px; background: #ffb6c1; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1rem; cursor: pointer; color: #6b1f3c; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+    .popup-close:hover { background: #f79ab5; }
 
-.room-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .edu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+    .edu-card { background: #fff; border: 1.5px solid #f7c6d8; border-radius: 16px; padding: 1.2rem; transition: all 0.2s; }
+    .edu-card:hover { border-color: #ffb6c1; transform: translateY(-2px); }
+    .edu-badge { display: inline-block; font-size: 0.65rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .badge-free { background: #e8f5e9; color: #2e7d32; }
+    .badge-premium { background: #fce4ec; color: #c2185b; }
+    .edu-level { display: inline-block; font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 20px; margin-bottom: 8px; margin-left: 4px; background: #fff6fa; color: #c45a8a; border: 1px solid #f7c6d8; text-transform: uppercase; }
+    .edu-title { font-size: 0.9rem; font-weight: 800; color: #c45a8a; margin-bottom: 6px; }
+    .edu-desc { font-size: 0.78rem; color: #a06080; line-height: 1.5; margin-bottom: 12px; }
+    .edu-action { display: inline-flex; align-items: center; gap: 5px; background: #ffb6c1; color: #6b1f3c; border: none; border-radius: 12px; padding: 7px 14px; font-size: 0.78rem; font-family: 'Nunito', sans-serif; font-weight: 800; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+    .edu-action:hover { background: #f79ab5; }
+    .edu-action.premium-btn { background: #fce4ec; color: #c2185b; }
+    .edu-action.premium-btn:hover { background: #f8bbd0; }
 
-.room-btn {
-  background: #fff;
-  border: 2px solid #f7c6d8;
-  border-radius: 16px;
-  padding: 1.2rem 1.8rem;
-  cursor: pointer;
-  font-family: 'Nunito', sans-serif;
-  text-align: center; transition: all 0.25s;
-  min-width: 130px;
-}
-.room-btn:hover { border-color: #ffb6c1; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255,182,193,0.3); }
-.room-btn-icon { font-size: 1.8rem; margin-bottom: 6px; }
-.room-btn-label { font-size: 0.85rem; font-weight: 800; color: #c45a8a; letter-spacing: 0.5px; text-transform: uppercase; }
-.room-btn-sub { font-size: 0.72rem; color: #d4a0b5; margin-top: 2px; }
+    #premium-popup { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; padding: 1rem; }
+    #premium-popup.open { display: flex; }
+    .premium-box { background: #fff6fa; border-radius: 20px; padding: 2rem; max-width: 340px; width: 100%; text-align: center; position: relative; }
+    .premium-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+    .premium-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #c45a8a; margin-bottom: 8px; }
+    .premium-desc { font-size: 0.85rem; color: #a06080; line-height: 1.6; margin-bottom: 1.4rem; }
+    .premium-cta { display: inline-block; background: #ffb6c1; color: #6b1f3c; border-radius: 14px; padding: 10px 24px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.9rem; text-decoration: none; transition: background 0.2s; }
+    .premium-cta:hover { background: #f79ab5; }
+    .premium-close { position: absolute; top: 12px; right: 12px; background: #f0b8ce; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.9rem; cursor: pointer; color: #6b1f3c; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  </style>
+</head>
+<body>
 
-#scene-content { display: none; opacity: 0; padding: 2rem; transition: opacity 0.4s; }
-#scene-content.visible { display: block; opacity: 1; }
-.section-panel { display: none; }
-.section-panel.active { display: block; }
+<div id="overlay"></div>
 
-.section-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #c45a8a; margin-bottom: 0.4rem; }
-.section-sub { font-size: 0.85rem; color: #d4a0b5; margin-bottom: 1.6rem; }
-
-.gfx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 2rem; }
-.gfx-card { background: #fff; border: 1.5px solid #f7c6d8; border-radius: 14px; overflow: hidden; cursor: pointer; transition: transform 0.2s; }
-.gfx-card:hover { transform: scale(1.03); }
-.gfx-thumb { width: 100%; height: 100px; background: #ffd6e7; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
-.gfx-info { padding: 8px 10px; }
-.gfx-name { font-size: 0.78rem; font-weight: 700; color: #c45a8a; }
-.gfx-num { font-size: 0.68rem; color: #d4a0b5; }
-
-.edu-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
-.edu-card { background: #fff; border: 1.5px solid #f7c6d8; border-radius: 16px; padding: 1.2rem; cursor: pointer; transition: all 0.2s; }
-.edu-card:hover { border-color: #ffb6c1; transform: translateY(-2px); }
-.edu-badge { display: inline-block; font-size: 0.65rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-.badge-free { background: #e8f5e9; color: #2e7d32; }
-.badge-premium { background: #fce4ec; color: #c2185b; }
-.edu-title { font-size: 0.9rem; font-weight: 800; color: #c45a8a; margin-bottom: 4px; }
-.edu-desc { font-size: 0.75rem; color: #a06080; line-height: 1.5; }
-.edu-action { margin-top: 12px; display: flex; align-items: center; gap: 4px; font-size: 0.75rem; font-weight: 700; color: #c45a8a; }
-
-.transition-overlay { position: fixed; inset: 0; background: #ffb6c1; z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-.transition-overlay.flash { pointer-events: all; opacity: 1; }
-</style>
-
-<div class="transition-overlay" id="overlay"></div>
-
-<div id="ury-root">
-  <header id="ury-header">
-    <div class="header-logo" onclick="goHome()">uryaesque ✦</div>
-    <nav class="header-nav">
-      <button class="nav-btn" id="nav-gfx" onclick="showSection('gfx')">✦ GFX</button>
-      <button class="nav-btn" id="nav-edu" onclick="showSection('edu')">📚 EDU</button>
-      <button class="nav-btn home-btn" onclick="goHome()">⌂ Home</button>
-    </nav>
-  </header>
-
-  <div id="scene-hero">
-    <div class="deco-circle"></div>
-    <div class="deco-circle"></div>
-
-    <div class="hero-logo-wrap">
-      <div class="hero-logo-img">🌸</div>
-      <div class="hero-logo-ring"></div>
-    </div>
-
-    <h1 class="hero-name">uryaesque</h1>
-    <p class="hero-handle">@kurogane.urya · she/her</p>
-    <p class="hero-bio">Anime enthusiast & magical girl in training ✨ Bringing anime to life through GFX art 🎨</p>
-
-    <div class="social-links">
-      <button class="social-btn" onclick="openLink('https://www.instagram.com/kurogane.urya/')">
-        <i class="ti ti-brand-instagram" aria-hidden="true"></i> Instagram
-      </button>
-      <button class="social-btn" onclick="openLink('https://github.com/Xxcuties')">
-        <i class="ti ti-brand-github" aria-hidden="true"></i> GitHub
-      </button>
-      <button class="social-btn" style="background:#c9b8ff; color:#2d1b69;">
-        <i class="ti ti-brand-discord" aria-hidden="true"></i> Discord
-      </button>
-    </div>
-
-    <div class="room-btns">
-      <div class="room-btn" onclick="enterRoom('gfx')">
-        <div class="room-btn-icon">🎨</div>
-        <div class="room-btn-label">GFX</div>
-        <div class="room-btn-sub">portfolio & works</div>
-      </div>
-      <div class="room-btn" onclick="enterRoom('edu')">
-        <div class="room-btn-icon">📚</div>
-        <div class="room-btn-label">EDU</div>
-        <div class="room-btn-sub">modul & latihan soal</div>
-      </div>
-    </div>
-  </div>
-
-  <div id="scene-content">
-    <div class="section-panel" id="panel-gfx">
-      <h2 class="section-title">GFX Works</h2>
-      <p class="section-sub">anime graphic art & edits ✦</p>
-      <div class="gfx-grid">
-        <div class="gfx-card"><div class="gfx-thumb">⚔️</div><div class="gfx-info"><div class="gfx-name">Jingliu</div><div class="gfx-num">#19</div></div></div>
-        <div class="gfx-card"><div class="gfx-thumb">🌟</div><div class="gfx-info"><div class="gfx-name">Suisei</div><div class="gfx-num">#23</div></div></div>
-        <div class="gfx-card"><div class="gfx-thumb">🌸</div><div class="gfx-info"><div class="gfx-name">Lycoris Recoil</div><div class="gfx-num">#13</div></div></div>
-        <div class="gfx-card"><div class="gfx-thumb">💜</div><div class="gfx-info"><div class="gfx-name">Milize</div><div class="gfx-num">#6</div></div></div>
-        <div class="gfx-card"><div class="gfx-thumb">🩷</div><div class="gfx-info"><div class="gfx-name">Nynym Ralei</div><div class="gfx-num">#7</div></div></div>
-        <div class="gfx-card" style="border-style:dashed; display:flex; align-items:center; justify-content:center; min-height:140px; flex-direction:column; gap:6px;">
-          <div style="font-size:1.5rem">✦</div>
-          <div style="font-size:0.75rem; color:#d4a0b5; font-weight:700;">more on IG</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-panel" id="panel-edu">
-      <h2 class="section-title">Education</h2>
-      <p class="section-sub">modul ajar, latihan soal & bahan belajar ✦</p>
-      <div class="edu-cards">
-        <div class="edu-card">
-          <span class="edu-badge badge-free">Gratis</span>
-          <div class="edu-title">Latihan Soal SD</div>
-          <div class="edu-desc">Soal latihan untuk SD — Bahasa, Matematika, IPA</div>
-          <div class="edu-action"><i class="ti ti-download" aria-hidden="true"></i> Unduh gratis</div>
-        </div>
-        <div class="edu-card">
-          <span class="edu-badge badge-free">Gratis</span>
-          <div class="edu-title">TOEFL Prep SMA</div>
-          <div class="edu-desc">Latihan soal TOEFL struktur & reading</div>
-          <div class="edu-action"><i class="ti ti-download" aria-hidden="true"></i> Unduh gratis</div>
-        </div>
-        <div class="edu-card">
-          <span class="edu-badge badge-premium">Premium</span>
-          <div class="edu-title">Modul Ajar Lengkap</div>
-          <div class="edu-desc">Lesson plan siap pakai + RPP + media ajar</div>
-          <div class="edu-action"><i class="ti ti-lock" aria-hidden="true"></i> Beli di Trakteer</div>
-        </div>
-        <div class="edu-card">
-          <span class="edu-badge badge-premium">Premium</span>
-          <div class="edu-title">Paket TOEFL Bundle</div>
-          <div class="edu-desc">Bank soal lengkap + pembahasan + tips</div>
-          <div class="edu-action"><i class="ti ti-lock" aria-hidden="true"></i> Beli di Trakteer</div>
-        </div>
-      </div>
+<div id="gfx-popup">
+  <div class="popup-box">
+    <button class="popup-close" onclick="closeGfxPopup()">✕</button>
+    <div class="popup-img-wrap" id="popup-img-wrap"></div>
+    <div class="popup-info">
+      <div class="popup-title" id="popup-title"></div>
+      <div class="popup-cat" id="popup-cat"></div>
     </div>
   </div>
 </div>
 
+<div id="premium-popup">
+  <div class="premium-box">
+    <button class="premium-close" onclick="closePremiumPopup()">✕</button>
+    <div class="premium-icon">🔒</div>
+    <div class="premium-title">File Premium</div>
+    <div class="premium-desc">File ini tersedia khusus untuk yang udah support~ Beli di Trakteer untuk unlock akses! 🌸</div>
+    <a class="premium-cta" href="https://trakteer.id/xxcuties" target="_blank">Beli di Trakteer 🩷</a>
+  </div>
+</div>
+
+<header id="ury-header">
+  <div class="header-logo" onclick="goHome()">uryaesque ✦</div>
+  <nav class="header-nav">
+    <button class="nav-btn" id="nav-gfx" onclick="showSection('gfx')">✦ GFX</button>
+    <button class="nav-btn" id="nav-edu" onclick="showSection('edu')">📚 EDU</button>
+    <button class="nav-btn home-btn" onclick="goHome()">⌂ Home</button>
+  </nav>
+</header>
+
+<div id="scene-hero">
+  <div class="deco-circle deco-1"></div>
+  <div class="deco-circle deco-2"></div>
+  <div class="deco-circle deco-3"></div>
+  <div class="hero-logo-wrap">
+    <div class="hero-logo-img">
+      <img src="logo.gif" alt="uryaesque" onerror="this.style.display='none'; this.parentNode.innerHTML='🌸'">
+    </div>
+    <div class="hero-logo-ring"></div>
+  </div>
+  <h1 class="hero-name">uryaesque</h1>
+  <p class="hero-handle">@kurogane.urya · she/her</p>
+  <p class="hero-bio">Anime enthusiast & magical girl in training ✨<br>Bringing anime to life through GFX art 🎨</p>
+  <div class="social-links">
+    <a class="social-btn" href="https://www.instagram.com/kurogane.urya/" target="_blank">📸 Instagram</a>
+    <a class="social-btn" href="https://github.com/Xxcuties" target="_blank">🐙 GitHub</a>
+    <a class="social-btn" href="https://trakteer.id/xxcuties" target="_blank" style="background:#a8d8ea;color:#1a4a5c;">☕ Trakteer</a>
+    <span class="social-btn disabled">🎮 Discord (soon)</span>
+  </div>
+  <div class="room-btns">
+    <div class="room-btn" onclick="enterRoom('gfx')">
+      <div class="room-btn-icon">🎨</div>
+      <div class="room-btn-label">GFX</div>
+      <div class="room-btn-sub">portfolio & works</div>
+    </div>
+    <div class="room-btn" onclick="enterRoom('edu')">
+      <div class="room-btn-icon">📚</div>
+      <div class="room-btn-label">EDU</div>
+      <div class="room-btn-sub">modul & latihan soal</div>
+    </div>
+  </div>
+</div>
+
+<div id="scene-content">
+  <div class="section-panel" id="panel-gfx">
+    <h2 class="section-title">GFX Works</h2>
+    <p class="section-sub">anime graphic art & edits ✦</p>
+    <div class="gfx-grid" id="gfx-grid"></div>
+  </div>
+  <div class="section-panel" id="panel-edu">
+    <h2 class="section-title">Education</h2>
+    <p class="section-sub">modul ajar, latihan soal & bahan belajar ✦</p>
+    <div class="edu-grid" id="edu-grid"></div>
+  </div>
+</div>
+
 <script>
+function renderGfx() {
+  const grid = document.getElementById('gfx-grid');
+  grid.innerHTML = '';
+  gfxWorks.forEach(work => {
+    const card = document.createElement('div');
+    card.className = 'gfx-card';
+    card.onclick = () => openGfxPopup(work);
+    card.innerHTML = `<div class="gfx-thumb"><img src="${work.file}" alt="${work.title}" onerror="this.style.display='none';this.parentNode.innerHTML='🎨'"></div><div class="gfx-info"><div class="gfx-name">${work.title}</div><div class="gfx-cat">${work.category}</div></div>`;
+    grid.appendChild(card);
+  });
+  const more = document.createElement('div');
+  more.className = 'gfx-more';
+  more.onclick = () => window.open('https://www.instagram.com/kurogane.urya/', '_blank');
+  more.innerHTML = '<span>✦</span><span>more on IG</span>';
+  grid.appendChild(more);
+}
+
+function renderEdu() {
+  const grid = document.getElementById('edu-grid');
+  grid.innerHTML = '';
+  eduWorks.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'edu-card';
+    const badgeClass = item.type === 'free' ? 'badge-free' : 'badge-premium';
+    const badgeText = item.type === 'free' ? 'Gratis' : 'Premium';
+    const actionHtml = item.type === 'free'
+      ? `<a class="edu-action" href="${item.file}" download>⬇ Unduh Gratis</a>`
+      : `<button class="edu-action premium-btn" onclick="openPremiumPopup()">🔒 Beli di Trakteer</button>`;
+    card.innerHTML = `<span class="edu-badge ${badgeClass}">${badgeText}</span><span class="edu-level">${item.level}</span><div class="edu-title">${item.title}</div><div class="edu-desc">${item.desc}</div>${actionHtml}`;
+    grid.appendChild(card);
+  });
+}
+
+function openGfxPopup(work) {
+  document.getElementById('popup-title').textContent = work.title;
+  document.getElementById('popup-cat').textContent = work.category;
+  document.getElementById('popup-img-wrap').innerHTML = `<img src="${work.file}" alt="${work.title}" onerror="this.style.display='none';this.parentNode.innerHTML='🎨'">`;
+  document.getElementById('gfx-popup').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeGfxPopup() { document.getElementById('gfx-popup').classList.remove('open'); document.body.style.overflow = ''; }
+function openPremiumPopup() { document.getElementById('premium-popup').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closePremiumPopup() { document.getElementById('premium-popup').classList.remove('open'); document.body.style.overflow = ''; }
+
+document.getElementById('gfx-popup').addEventListener('click', function(e) { if(e.target===this) closeGfxPopup(); });
+document.getElementById('premium-popup').addEventListener('click', function(e) { if(e.target===this) closePremiumPopup(); });
+
 function enterRoom(section) {
   const overlay = document.getElementById('overlay');
   overlay.classList.add('flash');
@@ -238,9 +246,12 @@ function enterRoom(section) {
     const content = document.getElementById('scene-content');
     content.style.display = 'block';
     showSection(section);
+    renderGfx();
+    renderEdu();
     setTimeout(() => { content.classList.add('visible'); overlay.classList.remove('flash'); }, 50);
   }, 300);
 }
+
 function showSection(section) {
   document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -248,15 +259,19 @@ function showSection(section) {
   const nb = document.getElementById('nav-' + section);
   if (nb) nb.classList.add('active');
 }
+
 function goHome() {
   const overlay = document.getElementById('overlay');
   overlay.classList.add('flash');
   setTimeout(() => {
     document.getElementById('scene-hero').style.display = 'flex';
     document.getElementById('ury-header').classList.remove('visible');
-    document.getElementById('scene-content').style.display = 'none';
-    document.getElementById('scene-content').classList.remove('visible');
+    const content = document.getElementById('scene-content');
+    content.style.display = 'none';
+    content.classList.remove('visible');
     overlay.classList.remove('flash');
   }, 300);
 }
 </script>
+</body>
+</html>
