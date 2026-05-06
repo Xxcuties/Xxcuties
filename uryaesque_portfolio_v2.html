@@ -1,0 +1,262 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+* { box-sizing: border-box; margin: 0; padding: 0; }
+#ury-root { font-family: 'Nunito', sans-serif; min-height: 600px; background: #fff6fa; position: relative; overflow: hidden; }
+.deco-circle { position: absolute; border-radius: 50%; pointer-events: none; }
+
+header#ury-header {
+  display: none;
+  position: sticky; top: 0; z-index: 100;
+  background: #fce4ef;
+  border-bottom: 1.5px solid #f7c6d8;
+  padding: 10px 20px;
+  align-items: center; justify-content: space-between; gap: 12px;
+}
+header#ury-header.visible { display: flex; }
+
+.header-logo {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 16px; color: #c45a8a; cursor: pointer; font-weight: 700;
+}
+
+.header-nav { display: flex; gap: 8px; }
+
+.nav-btn {
+  border: none;
+  background: #f0b8ce;
+  color: #6b1f3c;
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 800;
+  cursor: pointer; transition: all 0.2s;
+}
+.nav-btn:hover { background: #ffb6c1; }
+.nav-btn.active { background: #c45a8a; color: #fff; }
+.nav-btn.home-btn { background: #fce4ef; color: #c45a8a; border: 1.5px solid #f0b8ce; }
+.nav-btn.home-btn:hover { background: #f0b8ce; }
+
+#scene-hero {
+  min-height: 600px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 3rem 2rem; position: relative;
+}
+#scene-hero .deco-circle:nth-child(1) { width: 200px; height: 200px; background: #ffd6e7; opacity: 0.4; top: -60px; right: -40px; }
+#scene-hero .deco-circle:nth-child(2) { width: 120px; height: 120px; background: #ffb6c1; opacity: 0.25; bottom: 40px; left: -30px; }
+
+.hero-logo-wrap { margin-bottom: 1.2rem; position: relative; }
+.hero-logo-img {
+  width: 110px; height: 110px; border-radius: 50%;
+  border: 3px solid #ffb6c1; background: #ffd6e7;
+  display: flex; align-items: center; justify-content: center; font-size: 3rem;
+}
+.hero-logo-ring {
+  width: 122px; height: 122px; border-radius: 50%;
+  border: 2px dashed #f7c6d8;
+  position: absolute; top: -6px; left: -6px;
+  animation: spin 12s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.hero-name { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: #c45a8a; margin-bottom: 2px; text-align: center; }
+.hero-handle { font-size: 0.85rem; color: #d4a0b5; margin-bottom: 0.8rem; letter-spacing: 1px; }
+.hero-bio { font-size: 0.9rem; color: #a06080; text-align: center; max-width: 280px; line-height: 1.6; margin-bottom: 1.4rem; }
+
+.social-links { display: flex; gap: 10px; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center; }
+
+.social-btn {
+  background: #ffb6c1;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  color: #6b1f3c;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: all 0.2s;
+}
+.social-btn:hover { background: #f79ab5; transform: translateY(-1px); }
+
+.room-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+
+.room-btn {
+  background: #fff;
+  border: 2px solid #f7c6d8;
+  border-radius: 16px;
+  padding: 1.2rem 1.8rem;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  text-align: center; transition: all 0.25s;
+  min-width: 130px;
+}
+.room-btn:hover { border-color: #ffb6c1; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255,182,193,0.3); }
+.room-btn-icon { font-size: 1.8rem; margin-bottom: 6px; }
+.room-btn-label { font-size: 0.85rem; font-weight: 800; color: #c45a8a; letter-spacing: 0.5px; text-transform: uppercase; }
+.room-btn-sub { font-size: 0.72rem; color: #d4a0b5; margin-top: 2px; }
+
+#scene-content { display: none; opacity: 0; padding: 2rem; transition: opacity 0.4s; }
+#scene-content.visible { display: block; opacity: 1; }
+.section-panel { display: none; }
+.section-panel.active { display: block; }
+
+.section-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #c45a8a; margin-bottom: 0.4rem; }
+.section-sub { font-size: 0.85rem; color: #d4a0b5; margin-bottom: 1.6rem; }
+
+.gfx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 2rem; }
+.gfx-card { background: #fff; border: 1.5px solid #f7c6d8; border-radius: 14px; overflow: hidden; cursor: pointer; transition: transform 0.2s; }
+.gfx-card:hover { transform: scale(1.03); }
+.gfx-thumb { width: 100%; height: 100px; background: #ffd6e7; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+.gfx-info { padding: 8px 10px; }
+.gfx-name { font-size: 0.78rem; font-weight: 700; color: #c45a8a; }
+.gfx-num { font-size: 0.68rem; color: #d4a0b5; }
+
+.edu-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+.edu-card { background: #fff; border: 1.5px solid #f7c6d8; border-radius: 16px; padding: 1.2rem; cursor: pointer; transition: all 0.2s; }
+.edu-card:hover { border-color: #ffb6c1; transform: translateY(-2px); }
+.edu-badge { display: inline-block; font-size: 0.65rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge-free { background: #e8f5e9; color: #2e7d32; }
+.badge-premium { background: #fce4ec; color: #c2185b; }
+.edu-title { font-size: 0.9rem; font-weight: 800; color: #c45a8a; margin-bottom: 4px; }
+.edu-desc { font-size: 0.75rem; color: #a06080; line-height: 1.5; }
+.edu-action { margin-top: 12px; display: flex; align-items: center; gap: 4px; font-size: 0.75rem; font-weight: 700; color: #c45a8a; }
+
+.transition-overlay { position: fixed; inset: 0; background: #ffb6c1; z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.transition-overlay.flash { pointer-events: all; opacity: 1; }
+</style>
+
+<div class="transition-overlay" id="overlay"></div>
+
+<div id="ury-root">
+  <header id="ury-header">
+    <div class="header-logo" onclick="goHome()">uryaesque ✦</div>
+    <nav class="header-nav">
+      <button class="nav-btn" id="nav-gfx" onclick="showSection('gfx')">✦ GFX</button>
+      <button class="nav-btn" id="nav-edu" onclick="showSection('edu')">📚 EDU</button>
+      <button class="nav-btn home-btn" onclick="goHome()">⌂ Home</button>
+    </nav>
+  </header>
+
+  <div id="scene-hero">
+    <div class="deco-circle"></div>
+    <div class="deco-circle"></div>
+
+    <div class="hero-logo-wrap">
+      <div class="hero-logo-img">🌸</div>
+      <div class="hero-logo-ring"></div>
+    </div>
+
+    <h1 class="hero-name">uryaesque</h1>
+    <p class="hero-handle">@kurogane.urya · she/her</p>
+    <p class="hero-bio">Anime enthusiast & magical girl in training ✨ Bringing anime to life through GFX art 🎨</p>
+
+    <div class="social-links">
+      <button class="social-btn" onclick="openLink('https://www.instagram.com/kurogane.urya/')">
+        <i class="ti ti-brand-instagram" aria-hidden="true"></i> Instagram
+      </button>
+      <button class="social-btn" onclick="openLink('https://github.com/Xxcuties')">
+        <i class="ti ti-brand-github" aria-hidden="true"></i> GitHub
+      </button>
+      <button class="social-btn" style="background:#c9b8ff; color:#2d1b69;">
+        <i class="ti ti-brand-discord" aria-hidden="true"></i> Discord
+      </button>
+    </div>
+
+    <div class="room-btns">
+      <div class="room-btn" onclick="enterRoom('gfx')">
+        <div class="room-btn-icon">🎨</div>
+        <div class="room-btn-label">GFX</div>
+        <div class="room-btn-sub">portfolio & works</div>
+      </div>
+      <div class="room-btn" onclick="enterRoom('edu')">
+        <div class="room-btn-icon">📚</div>
+        <div class="room-btn-label">EDU</div>
+        <div class="room-btn-sub">modul & latihan soal</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="scene-content">
+    <div class="section-panel" id="panel-gfx">
+      <h2 class="section-title">GFX Works</h2>
+      <p class="section-sub">anime graphic art & edits ✦</p>
+      <div class="gfx-grid">
+        <div class="gfx-card"><div class="gfx-thumb">⚔️</div><div class="gfx-info"><div class="gfx-name">Jingliu</div><div class="gfx-num">#19</div></div></div>
+        <div class="gfx-card"><div class="gfx-thumb">🌟</div><div class="gfx-info"><div class="gfx-name">Suisei</div><div class="gfx-num">#23</div></div></div>
+        <div class="gfx-card"><div class="gfx-thumb">🌸</div><div class="gfx-info"><div class="gfx-name">Lycoris Recoil</div><div class="gfx-num">#13</div></div></div>
+        <div class="gfx-card"><div class="gfx-thumb">💜</div><div class="gfx-info"><div class="gfx-name">Milize</div><div class="gfx-num">#6</div></div></div>
+        <div class="gfx-card"><div class="gfx-thumb">🩷</div><div class="gfx-info"><div class="gfx-name">Nynym Ralei</div><div class="gfx-num">#7</div></div></div>
+        <div class="gfx-card" style="border-style:dashed; display:flex; align-items:center; justify-content:center; min-height:140px; flex-direction:column; gap:6px;">
+          <div style="font-size:1.5rem">✦</div>
+          <div style="font-size:0.75rem; color:#d4a0b5; font-weight:700;">more on IG</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-panel" id="panel-edu">
+      <h2 class="section-title">Education</h2>
+      <p class="section-sub">modul ajar, latihan soal & bahan belajar ✦</p>
+      <div class="edu-cards">
+        <div class="edu-card">
+          <span class="edu-badge badge-free">Gratis</span>
+          <div class="edu-title">Latihan Soal SD</div>
+          <div class="edu-desc">Soal latihan untuk SD — Bahasa, Matematika, IPA</div>
+          <div class="edu-action"><i class="ti ti-download" aria-hidden="true"></i> Unduh gratis</div>
+        </div>
+        <div class="edu-card">
+          <span class="edu-badge badge-free">Gratis</span>
+          <div class="edu-title">TOEFL Prep SMA</div>
+          <div class="edu-desc">Latihan soal TOEFL struktur & reading</div>
+          <div class="edu-action"><i class="ti ti-download" aria-hidden="true"></i> Unduh gratis</div>
+        </div>
+        <div class="edu-card">
+          <span class="edu-badge badge-premium">Premium</span>
+          <div class="edu-title">Modul Ajar Lengkap</div>
+          <div class="edu-desc">Lesson plan siap pakai + RPP + media ajar</div>
+          <div class="edu-action"><i class="ti ti-lock" aria-hidden="true"></i> Beli di Trakteer</div>
+        </div>
+        <div class="edu-card">
+          <span class="edu-badge badge-premium">Premium</span>
+          <div class="edu-title">Paket TOEFL Bundle</div>
+          <div class="edu-desc">Bank soal lengkap + pembahasan + tips</div>
+          <div class="edu-action"><i class="ti ti-lock" aria-hidden="true"></i> Beli di Trakteer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function enterRoom(section) {
+  const overlay = document.getElementById('overlay');
+  overlay.classList.add('flash');
+  setTimeout(() => {
+    document.getElementById('scene-hero').style.display = 'none';
+    document.getElementById('ury-header').classList.add('visible');
+    const content = document.getElementById('scene-content');
+    content.style.display = 'block';
+    showSection(section);
+    setTimeout(() => { content.classList.add('visible'); overlay.classList.remove('flash'); }, 50);
+  }, 300);
+}
+function showSection(section) {
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + section).classList.add('active');
+  const nb = document.getElementById('nav-' + section);
+  if (nb) nb.classList.add('active');
+}
+function goHome() {
+  const overlay = document.getElementById('overlay');
+  overlay.classList.add('flash');
+  setTimeout(() => {
+    document.getElementById('scene-hero').style.display = 'flex';
+    document.getElementById('ury-header').classList.remove('visible');
+    document.getElementById('scene-content').style.display = 'none';
+    document.getElementById('scene-content').classList.remove('visible');
+    overlay.classList.remove('flash');
+  }, 300);
+}
+</script>
