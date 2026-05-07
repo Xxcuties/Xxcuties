@@ -58,7 +58,17 @@
     .section-panel { display: none; }
     .section-panel.active { display: block; }
     .section-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: #c45a8a; margin-bottom: 4px; }
-    .section-sub { font-size: 0.85rem; color: #d4a0b5; margin-bottom: 1.8rem; }
+    .section-sub { font-size: 0.85rem; color: #d4a0b5; margin-bottom: 0.8rem; }
+
+    /* support notice */
+    .support-notice {
+      background: #fff0f5; border: 1.5px dashed #f7c6d8;
+      border-radius: 14px; padding: 10px 16px;
+      font-size: 0.82rem; color: #c45a8a;
+      margin-bottom: 1.6rem; text-align: center; line-height: 1.6;
+    }
+    .support-notice a { color: #d45a8a; font-weight: 800; text-decoration: none; }
+    .support-notice a:hover { text-decoration: underline; }
 
     .gfx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
     .gfx-card { background: #fff; border: 1.5px solid #f7c6d8; border-radius: 14px; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
@@ -84,7 +94,7 @@
     .popup-close { position: absolute; top: 12px; right: 12px; background: #ffb6c1; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1rem; cursor: pointer; color: #6b1f3c; font-weight: 800; display: flex; align-items: center; justify-content: center; }
     .popup-close:hover { background: #f79ab5; }
 
-    .edu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+    .edu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
     .edu-card { background: #fff; border: 1.5px solid #f7c6d8; border-radius: 16px; padding: 1.2rem; transition: all 0.2s; }
     .edu-card:hover { border-color: #ffb6c1; transform: translateY(-2px); }
     .edu-badge { display: inline-block; font-size: 0.65rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -93,10 +103,14 @@
     .edu-level { display: inline-block; font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 20px; margin-bottom: 8px; margin-left: 4px; background: #fff6fa; color: #c45a8a; border: 1px solid #f7c6d8; text-transform: uppercase; }
     .edu-title { font-size: 0.9rem; font-weight: 800; color: #c45a8a; margin-bottom: 6px; }
     .edu-desc { font-size: 0.78rem; color: #a06080; line-height: 1.5; margin-bottom: 12px; }
-    .edu-action { display: inline-flex; align-items: center; gap: 5px; background: #ffb6c1; color: #6b1f3c; border: none; border-radius: 12px; padding: 7px 14px; font-size: 0.78rem; font-family: 'Nunito', sans-serif; font-weight: 800; cursor: pointer; text-decoration: none; transition: background 0.2s; }
-    .edu-action:hover { background: #f79ab5; }
-    .edu-action.premium-btn { background: #fce4ec; color: #c2185b; }
-    .edu-action.premium-btn:hover { background: #f8bbd0; }
+    .edu-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .edu-action { display: inline-flex; align-items: center; gap: 5px; border: none; border-radius: 12px; padding: 7px 14px; font-size: 0.78rem; font-family: 'Nunito', sans-serif; font-weight: 800; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+    .btn-pdf { background: #ffb6c1; color: #6b1f3c; }
+    .btn-pdf:hover { background: #f79ab5; }
+    .btn-word { background: #c9e4ff; color: #1a3a5c; }
+    .btn-word:hover { background: #b0d4f7; }
+    .btn-premium { background: #fce4ec; color: #c2185b; }
+    .btn-premium:hover { background: #f8bbd0; }
 
     #premium-popup { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; padding: 1rem; }
     #premium-popup.open { display: flex; }
@@ -185,6 +199,10 @@
   <div class="section-panel" id="panel-edu">
     <h2 class="section-title">Education</h2>
     <p class="section-sub">modul ajar, latihan soal & bahan belajar ✦</p>
+    <div class="support-notice">
+      🌸 jangan lupa support aku dengan follow dan share postinganku yah owo~
+      <br><a href="https://www.instagram.com/kurogane.urya/" target="_blank">📸 @kurogane.urya</a>
+    </div>
     <div class="edu-grid" id="edu-grid"></div>
   </div>
 </div>
@@ -215,10 +233,18 @@ function renderEdu() {
     card.className = 'edu-card';
     const badgeClass = item.type === 'free' ? 'badge-free' : 'badge-premium';
     const badgeText = item.type === 'free' ? 'Gratis' : 'Premium';
-    const actionHtml = item.type === 'free'
-      ? `<a class="edu-action" href="${item.file}" download>⬇ Unduh Gratis</a>`
-      : `<button class="edu-action premium-btn" onclick="openPremiumPopup()">🔒 Beli di Trakteer</button>`;
-    card.innerHTML = `<span class="edu-badge ${badgeClass}">${badgeText}</span><span class="edu-level">${item.level}</span><div class="edu-title">${item.title}</div><div class="edu-desc">${item.desc}</div>${actionHtml}`;
+
+    let actionsHtml = '';
+    if (item.type === 'free') {
+      actionsHtml = `<div class="edu-actions">`;
+      if (item.filePdf) actionsHtml += `<a class="edu-action btn-pdf" href="${item.filePdf}" download>⬇ PDF</a>`;
+      if (item.fileWord) actionsHtml += `<a class="edu-action btn-word" href="${item.fileWord}" download>⬇ Word</a>`;
+      actionsHtml += `</div>`;
+    } else {
+      actionsHtml = `<div class="edu-actions"><button class="edu-action btn-premium" onclick="openPremiumPopup()">🔒 Beli di Trakteer</button></div>`;
+    }
+
+    card.innerHTML = `<span class="edu-badge ${badgeClass}">${badgeText}</span><span class="edu-level">${item.level}</span><div class="edu-title">${item.title}</div><div class="edu-desc">${item.desc}</div>${actionsHtml}`;
     grid.appendChild(card);
   });
 }
