@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>uryaesque</title>
   <link rel="icon" href="logo.gif" type="image/gif">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-brands/css/uicons-brands.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
   <script src="gfx/gfx.js"></script>
   <script src="edu/edu.js"></script>
@@ -152,8 +155,8 @@
   <div class="header-logo" onclick="goHome()">uryaesque ✦</div>
   <nav class="header-nav">
     <button class="nav-btn" id="nav-gfx" onclick="showSection('gfx')">✦ GFX</button>
-    <button class="nav-btn" id="nav-edu" onclick="showSection('edu')">📚 EDU</button>
-    <button class="nav-btn home-btn" onclick="goHome()">⌂ Home</button>
+    <button class="nav-btn" id="nav-edu" onclick="showSection('edu')"><i class="fi fi-rr-books"></i> EDU</button>
+    <button class="nav-btn home-btn" onclick="goHome()"><i class="fi fi-br-home-heart"></i> Home</button>
   </nav>
 </header>
 
@@ -171,10 +174,11 @@
   <p class="hero-handle">@kurogane.urya · she/her</p>
   <p class="hero-bio">Anime enthusiast & magical girl in training ✨<br>Bringing anime to life through GFX art 🎨</p>
   <div class="social-links">
-    <a class="social-btn" href="https://www.instagram.com/kurogane.urya/" target="_blank">📸 Instagram</a>
-    <a class="social-btn" href="https://github.com/Xxcuties" target="_blank">🐙 GitHub</a>
-    <a class="social-btn" href="https://trakteer.id/xxcuties" target="_blank" style="background:#a8d8ea;color:#1a4a5c;">☕ Trakteer</a>
-    <span class="social-btn disabled">🎮 Discord (soon)</span>
+    <a class="social-btn" href="https://www.instagram.com/kurogane.urya/" target="_blank"><i class="fi fi-brands-instagram"></i> Instagram</a>
+    <a class="social-btn" href="https://github.com/Xxcuties" target="_blank"><i class="fi fi-brands-github"></i> GitHub</a>
+    <a class="social-btn" href="https://trakteer.id/xxcuties" target="_blank" style="background:#a8d8ea;color:#1a4a5c;">Trakteer</a>
+    <a class="social-btn" href="https://ru.pinterest.com/urya_sensei/" target="_blank" style="background:#e8b4c0;color:#6b1f3c;"><i class="fi fi-brands-pinterest"></i> Pinterest</a>
+    <span class="social-btn disabled"><i class="fi fi-brands-discord"></i> Discord (soon)</span>
   </div>
   <div class="room-btns">
     <div class="room-btn" onclick="enterRoom('gfx')">
@@ -237,8 +241,8 @@ function renderEdu() {
     let actionsHtml = '';
     if (item.type === 'free') {
       actionsHtml = `<div class="edu-actions">`;
-      if (item.filePdf) actionsHtml += `<a class="edu-action btn-pdf" href="${item.filePdf}" download>⬇ PDF</a>`;
-      if (item.fileWord) actionsHtml += `<a class="edu-action btn-word" href="${item.fileWord}" download>⬇ Word</a>`;
+      if (item.filePdf) actionsHtml += `<a class="edu-action btn-pdf" href="${item.filePdf}" download><i class="fi fi-rr-file-download"></i> PDF</a>`;
+      if (item.fileWord) actionsHtml += `<a class="edu-action btn-word" href="${item.fileWord}" download><i class="fi fi-rr-file-download"></i> Word</a>`;
       actionsHtml += `</div>`;
     } else {
       actionsHtml = `<div class="edu-actions"><button class="edu-action btn-premium" onclick="openPremiumPopup()">🔒 Beli di Trakteer</button></div>`;
