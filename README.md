@@ -14,3 +14,23 @@ Here are some ideas to get you started:
 - 😄 Pronouns: she/her 🌸
 - ⚡ Fun fact: Like Gregor Samsa who woke up transformed, I also experience my own “metamorphosis” — but mine is turning everyday ideas into pastel projects and playful creations ✨📚🎀
 
+# here us 🌸 uryaesque
+
+✨ Personal landing page of **[@kurogane.urya](https://www.instagram.com/kurogane.urya/)**  
+Anime enthusiast · Magical girl in training · GFX artist
+
+---
+
+## 🎀 Features
+- 🖼️ Portfolio showcase (GFX art & edits)  
+- 📚 EDU section (modules & practice worksheets)  
+- 🔗 Quick links: Instagram, GitHub, Trakteer, Pinterest, Discord  
+
+---
+
+## 🚀 How to View
+- Open [xxcuties.github.io/Xxcuties](https://xxcuties.github.io/Xxcuties)  
+- Or clone this repo and run `index.html` locally ✨  
+
+```bash
+git clone https://github.com/Xxcuties/Xxcuties.git
