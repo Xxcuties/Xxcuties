@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EDU — uryaesque</title>
+  <link rel="icon" href="logo.gif" type="image/gif">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-brands/css/uicons-brands.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <script src="edu/edu.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #fff6fa; min-height: 100vh; }
+
+    #overlay { position: fixed; inset: 0; background: #ffb6c1; z-index: 999; opacity: 1; pointer-events: all; transition: opacity 0.5s; }
+
+    header { position: sticky; top: 0; z-index: 100; background: #fce4ef; border-bottom: 1.5px solid #f7c6d8; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
+    .header-logo { font-family: 'Playfair Display', serif; font-style: italic; font-size: 16px; color: #c45a8a; cursor: pointer; font-weight: 700; text-decoration: none; }
+    .header-nav { display: flex; gap: 8px; }
+    .nav-btn { border: none; background: #f0b8ce; color: #6b1f3c; border-radius: 20px; padding: 6px 16px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.2s; text-decoration: none; display: flex; align-items: center; gap: 5px; }
+    .nav-btn:hover { background: #ffb6c1; }
+    .nav-btn.active { background: #c45a8a; color: #fff; }
+    .nav-btn.home-btn { background: #fce4ef; color: #c45a8a; border: 1.5px solid #f0b8ce; }
+    .nav-btn.home-btn:hover { background: #f0b8ce; }
+
+    main { padding: 2rem; max-width: 900px; margin: 0 auto; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .section-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: #c45a8a; margin-bottom: 4px; }
+    .section-sub { font-size: 0.85rem; color: #d4a0b5; margin-bottom: 0.8rem; }
+
+    .support-notice { background: #fff0f5; border: 1.5px dashed #f7c6d8; border-radius: 14px; padding: 10px 16px; font-size: 0.82rem; color: #c45a8a; margin-bottom: 1.6rem; text-align: center; line-height: 1.6; }
+    .support-notice a { color: #d45a8a; font-weight: 800; text-decoration: none; }
+    .support-notice a:hover { text-decoration: underline; }
+
+    .edu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+    .edu-card { background: #fff; border: 1.5px solid #f7c6d8; border-radius: 16px; padding: 1.2rem; transition: all 0.2s; }
+    .edu-card:hover { border-color: #ffb6c1; transform: translateY(-2px); }
+    .edu-badge { display: inline-block; font-size: 0.65rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .badge-free { background: #e8f5e9; color: #2e7d32; }
+    .badge-premium { background: #fce4ec; color: #c2185b; }
+    .edu-level { display: inline-block; font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 20px; margin-bottom: 8px; margin-left: 4px; background: #fff6fa; color: #c45a8a; border: 1px solid #f7c6d8; text-transform: uppercase; }
+    .edu-title { font-size: 0.9rem; font-weight: 800; color: #c45a8a; margin-bottom: 6px; }
+    .edu-desc { font-size: 0.78rem; color: #a06080; line-height: 1.5; margin-bottom: 12px; }
+    .edu-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .edu-action { display: inline-flex; align-items: center; gap: 5px; border: none; border-radius: 12px; padding: 7px 14px; font-size: 0.78rem; font-family: 'Nunito', sans-serif; font-weight: 800; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+    .btn-pdf { background: #ffb6c1; color: #6b1f3c; }
+    .btn-pdf:hover { background: #f79ab5; }
+    .btn-word { background: #c9e4ff; color: #1a3a5c; }
+    .btn-word:hover { background: #b0d4f7; }
+    .btn-premium { background: #fce4ec; color: #c2185b; }
+    .btn-premium:hover { background: #f8bbd0; }
+
+    #premium-popup { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; padding: 1rem; }
+    #premium-popup.open { display: flex; }
+    .premium-box { background: #fff6fa; border-radius: 20px; padding: 2rem; max-width: 340px; width: 100%; text-align: center; position: relative; }
+    .premium-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+    .premium-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #c45a8a; margin-bottom: 8px; }
+    .premium-desc { font-size: 0.85rem; color: #a06080; line-height: 1.6; margin-bottom: 1.4rem; }
+    .premium-cta { display: inline-block; background: #ffb6c1; color: #6b1f3c; border-radius: 14px; padding: 10px 24px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.9rem; text-decoration: none; transition: background 0.2s; }
+    .premium-cta:hover { background: #f79ab5; }
+    .premium-close { position: absolute; top: 12px; right: 12px; background: #f0b8ce; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.9rem; cursor: pointer; color: #6b1f3c; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  </style>
+</head>
+<body>
+
+<div id="overlay"></div>
+
+<div id="premium-popup">
+  <div class="premium-box">
+    <button class="premium-close" onclick="closePremiumPopup()">✕</button>
+    <div class="premium-icon">🔒</div>
+    <div class="premium-title">File Premium</div>
+    <div class="premium-desc">File ini tersedia khusus untuk yang udah support~ Beli di Trakteer untuk unlock akses! 🌸</div>
+    <a class="premium-cta" href="https://trakteer.id/xxcuties" target="_blank">Beli di Trakteer 🩷</a>
+  </div>
+</div>
+
+<header>
+  <a class="header-logo" href="index.html" onclick="goTo(event,'index.html')">uryaesque ✦</a>
+  <nav class="header-nav">
+    <a class="nav-btn" href="gfx.html" onclick="goTo(event,'gfx.html')">✦ GFX</a>
+    <a class="nav-btn active" href="edu.html"><i class="fi fi-rr-books"></i> EDU</a>
+    <a class="nav-btn home-btn" href="index.html" onclick="goTo(event,'index.html')"><i class="fi fi-br-home-heart"></i> Home</a>
+  </nav>
+</header>
+
+<main>
+  <h2 class="section-title">Education</h2>
+  <p class="section-sub">modul ajar, latihan soal & bahan belajar ✦</p>
+  <div class="support-notice">
+    🌸 jangan lupa support aku dengan follow dan share postinganku yah owo~
+    <br><a href="https://www.instagram.com/kurogane.urya/" target="_blank">📸 @kurogane.urya</a>
+  </div>
+  <div class="edu-grid" id="edu-grid"></div>
+</main>
+
+<script>
+  window.addEventListener('load', () => {
+    const overlay = document.getElementById('overlay');
+    setTimeout(() => { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }, 50);
+  });
+
+  function goTo(e, page) {
+    e.preventDefault();
+    const overlay = document.getElementById('overlay');
+    overlay.style.opacity = '1';
+    overlay.style.pointerEvents = 'all';
+    setTimeout(() => { window.location.href = page; }, 400);
+  }
+
+  function openPremiumPopup() { document.getElementById('premium-popup').classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closePremiumPopup() { document.getElementById('premium-popup').classList.remove('open'); document.body.style.overflow = ''; }
+  document.getElementById('premium-popup').addEventListener('click', function(e) { if(e.target===this) closePremiumPopup(); });
+
+  function renderEdu() {
+    const grid = document.getElementById('edu-grid');
+    grid.innerHTML = '';
+    eduWorks.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'edu-card';
+      const badgeClass = item.type === 'free' ? 'badge-free' : 'badge-premium';
+      const badgeText = item.type === 'free' ? 'Gratis' : 'Premium';
+      let actionsHtml = '';
+      if (item.type === 'free') {
+        actionsHtml = '<div class="edu-actions">';
+        if (item.filePdf) actionsHtml += `<a class="edu-action btn-pdf" href="${item.filePdf}" download><i class="fi fi-rr-file-download"></i> PDF</a>`;
+        if (item.fileWord) actionsHtml += `<a class="edu-action btn-word" href="${item.fileWord}" download><i class="fi fi-rr-file-download"></i> Word</a>`;
+        actionsHtml += '</div>';
+      } else {
+        actionsHtml = `<div class="edu-actions"><button class="edu-action btn-premium" onclick="openPremiumPopup()">🔒 Beli di Trakteer</button></div>`;
+      }
+      card.innerHTML = `<span class="edu-badge ${badgeClass}">${badgeText}</span><span class="edu-level">${item.level}</span><div class="edu-title">${item.title}</div><div class="edu-desc">${item.desc}</div>${actionsHtml}`;
+      grid.appendChild(card);
+    });
+  }
+
+  renderEdu();
+</script>
+</body>
+</html>

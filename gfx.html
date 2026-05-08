@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GFX — uryaesque</title>
+  <link rel="icon" href="logo.gif" type="image/gif">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-brands/css/uicons-brands.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <script src="gfx/gfx.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #fff6fa; min-height: 100vh; }
+
+    #overlay { position: fixed; inset: 0; background: #ffb6c1; z-index: 999; opacity: 1; pointer-events: all; transition: opacity 0.5s; }
+
+    header { position: sticky; top: 0; z-index: 100; background: #fce4ef; border-bottom: 1.5px solid #f7c6d8; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
+    .header-logo { font-family: 'Playfair Display', serif; font-style: italic; font-size: 16px; color: #c45a8a; cursor: pointer; font-weight: 700; text-decoration: none; }
+    .header-nav { display: flex; gap: 8px; }
+    .nav-btn { border: none; background: #f0b8ce; color: #6b1f3c; border-radius: 20px; padding: 6px 16px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.2s; text-decoration: none; display: flex; align-items: center; gap: 5px; }
+    .nav-btn:hover { background: #ffb6c1; }
+    .nav-btn.active { background: #c45a8a; color: #fff; }
+    .nav-btn.home-btn { background: #fce4ef; color: #c45a8a; border: 1.5px solid #f0b8ce; }
+    .nav-btn.home-btn:hover { background: #f0b8ce; }
+
+    main { padding: 2rem; max-width: 900px; margin: 0 auto; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .section-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: #c45a8a; margin-bottom: 4px; }
+    .section-sub { font-size: 0.85rem; color: #d4a0b5; margin-bottom: 1.8rem; }
+
+    .gfx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+    .gfx-card { background: #fff; border: 1.5px solid #f7c6d8; border-radius: 14px; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+    .gfx-card:hover { transform: scale(1.04); box-shadow: 0 8px 20px rgba(255,182,193,0.3); }
+    .gfx-thumb { width: 100%; height: 120px; background: linear-gradient(135deg, #ffd6e7, #ffb6c1); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .gfx-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .gfx-info { padding: 8px 12px 10px; }
+    .gfx-name { font-size: 0.8rem; font-weight: 700; color: #c45a8a; }
+    .gfx-cat { font-size: 0.68rem; color: #d4a0b5; text-transform: uppercase; letter-spacing: 0.3px; }
+    .gfx-more { border: 2px dashed #f7c6d8; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 160px; cursor: pointer; transition: all 0.2s; gap: 6px; }
+    .gfx-more:hover { border-color: #ffb6c1; }
+    .gfx-more span:first-child { font-size: 1.5rem; }
+    .gfx-more span:last-child { font-size: 0.75rem; color: #d4a0b5; font-weight: 700; }
+
+    #gfx-popup { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.75); align-items: center; justify-content: center; padding: 1rem; }
+    #gfx-popup.open { display: flex; }
+    .popup-box { background: #fff6fa; border-radius: 20px; max-width: 500px; width: 100%; overflow: hidden; position: relative; }
+    .popup-img-wrap { width: 100%; background: #ffd6e7; display: flex; align-items: center; justify-content: center; min-height: 280px; }
+    .popup-img-wrap img { width: 100%; max-height: 420px; object-fit: contain; }
+    .popup-info { padding: 1.2rem 1.4rem; }
+    .popup-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #c45a8a; margin-bottom: 4px; }
+    .popup-cat { font-size: 0.78rem; color: #d4a0b5; text-transform: uppercase; letter-spacing: 0.5px; }
+    .popup-close { position: absolute; top: 12px; right: 12px; background: #ffb6c1; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1rem; cursor: pointer; color: #6b1f3c; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+    .popup-close:hover { background: #f79ab5; }
+  </style>
+</head>
+<body>
+
+<div id="overlay"></div>
+
+<div id="gfx-popup">
+  <div class="popup-box">
+    <button class="popup-close" onclick="closePopup()">✕</button>
+    <div class="popup-img-wrap" id="popup-img-wrap"></div>
+    <div class="popup-info">
+      <div class="popup-title" id="popup-title"></div>
+      <div class="popup-cat" id="popup-cat"></div>
+    </div>
+  </div>
+</div>
+
+<header>
+  <a class="header-logo" href="index.html" onclick="goTo(event,'index.html')">uryaesque ✦</a>
+  <nav class="header-nav">
+    <a class="nav-btn active" href="gfx.html">✦ GFX</a>
+    <a class="nav-btn" href="edu.html" onclick="goTo(event,'edu.html')"><i class="fi fi-rr-books"></i> EDU</a>
+    <a class="nav-btn home-btn" href="index.html" onclick="goTo(event,'index.html')"><i class="fi fi-br-home-heart"></i> Home</a>
+  </nav>
+</header>
+
+<main>
+  <h2 class="section-title">GFX Works</h2>
+  <p class="section-sub">anime graphic art & edits ✦</p>
+  <div class="gfx-grid" id="gfx-grid"></div>
+</main>
+
+<script>
+  // fade in
+  window.addEventListener('load', () => {
+    const overlay = document.getElementById('overlay');
+    setTimeout(() => { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }, 50);
+  });
+
+  function goTo(e, page) {
+    e.preventDefault();
+    const overlay = document.getElementById('overlay');
+    overlay.style.opacity = '1';
+    overlay.style.pointerEvents = 'all';
+    setTimeout(() => { window.location.href = page; }, 400);
+  }
+
+  function renderGfx() {
+    const grid = document.getElementById('gfx-grid');
+    grid.innerHTML = '';
+    gfxWorks.forEach(work => {
+      const card = document.createElement('div');
+      card.className = 'gfx-card';
+      card.onclick = () => openPopup(work);
+      card.innerHTML = `<div class="gfx-thumb"><img src="${work.file}" alt="${work.title}" onerror="this.style.display='none';this.parentNode.innerHTML='🎨'"></div><div class="gfx-info"><div class="gfx-name">${work.title}</div><div class="gfx-cat">${work.category}</div></div>`;
+      grid.appendChild(card);
+    });
+    const more = document.createElement('div');
+    more.className = 'gfx-more';
+    more.onclick = () => window.open('https://www.instagram.com/kurogane.urya/', '_blank');
+    more.innerHTML = '<span>✦</span><span>more on IG</span>';
+    grid.appendChild(more);
+  }
+
+  function openPopup(work) {
+    document.getElementById('popup-title').textContent = work.title;
+    document.getElementById('popup-cat').textContent = work.category;
+    document.getElementById('popup-img-wrap').innerHTML = `<img src="${work.file}" alt="${work.title}" onerror="this.style.display='none';this.parentNode.innerHTML='🎨'">`;
+    document.getElementById('gfx-popup').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePopup() { document.getElementById('gfx-popup').classList.remove('open'); document.body.style.overflow = ''; }
+  document.getElementById('gfx-popup').addEventListener('click', function(e) { if(e.target===this) closePopup(); });
+
+  renderGfx();
+</script>
+</body>
+</html>
