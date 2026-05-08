@@ -9,26 +9,16 @@
   <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
   <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
-  <script src="gfx/gfx.js"></script>
-  <script src="edu/edu.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Nunito', sans-serif; background: #fff6fa; min-height: 100vh; }
 
-    #overlay { position: fixed; inset: 0; background: #ffb6c1; z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    #overlay { position: fixed; inset: 0; background: #ffb6c1; z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
     #overlay.flash { opacity: 1; pointer-events: all; }
 
-    #ury-header { display: none; position: sticky; top: 0; z-index: 100; background: #fce4ef; border-bottom: 1.5px solid #f7c6d8; padding: 10px 20px; align-items: center; justify-content: space-between; }
-    #ury-header.visible { display: flex; }
-    .header-logo { font-family: 'Playfair Display', serif; font-style: italic; font-size: 16px; color: #c45a8a; cursor: pointer; font-weight: 700; }
-    .header-nav { display: flex; gap: 8px; }
-    .nav-btn { border: none; background: #f0b8ce; color: #6b1f3c; border-radius: 20px; padding: 6px 16px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.2s; }
-    .nav-btn:hover { background: #ffb6c1; }
-    .nav-btn.active { background: #c45a8a; color: #fff; }
-    .nav-btn.home-btn { background: #fce4ef; color: #c45a8a; border: 1.5px solid #f0b8ce; }
-    .nav-btn.home-btn:hover { background: #f0b8ce; }
+    #scene-hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 2rem; position: relative; overflow: hidden; animation: fadeIn 0.5s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    #scene-hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 2rem; position: relative; overflow: hidden; }
     .deco-circle { position: absolute; border-radius: 50%; pointer-events: none; }
     .deco-1 { width: 220px; height: 220px; background: #ffd6e7; opacity: 0.4; top: -70px; right: -50px; }
     .deco-2 { width: 130px; height: 130px; background: #ffb6c1; opacity: 0.25; bottom: 60px; left: -40px; }
@@ -55,110 +45,11 @@
     .room-btn-icon { font-size: 2rem; margin-bottom: 8px; }
     .room-btn-label { font-size: 0.9rem; font-weight: 800; color: #c45a8a; text-transform: uppercase; letter-spacing: 0.5px; }
     .room-btn-sub { font-size: 0.72rem; color: #d4a0b5; margin-top: 3px; }
-
-    #scene-content { display: none; opacity: 0; padding: 2rem; transition: opacity 0.4s; }
-    #scene-content.visible { display: block; opacity: 1; }
-    .section-panel { display: none; }
-    .section-panel.active { display: block; }
-    .section-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: #c45a8a; margin-bottom: 4px; }
-    .section-sub { font-size: 0.85rem; color: #d4a0b5; margin-bottom: 0.8rem; }
-
-    /* support notice */
-    .support-notice {
-      background: #fff0f5; border: 1.5px dashed #f7c6d8;
-      border-radius: 14px; padding: 10px 16px;
-      font-size: 0.82rem; color: #c45a8a;
-      margin-bottom: 1.6rem; text-align: center; line-height: 1.6;
-    }
-    .support-notice a { color: #d45a8a; font-weight: 800; text-decoration: none; }
-    .support-notice a:hover { text-decoration: underline; }
-
-    .gfx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
-    .gfx-card { background: #fff; border: 1.5px solid #f7c6d8; border-radius: 14px; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
-    .gfx-card:hover { transform: scale(1.04); box-shadow: 0 8px 20px rgba(255,182,193,0.3); }
-    .gfx-thumb { width: 100%; height: 110px; background: linear-gradient(135deg, #ffd6e7, #ffb6c1); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .gfx-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .gfx-info { padding: 8px 12px 10px; }
-    .gfx-name { font-size: 0.8rem; font-weight: 700; color: #c45a8a; }
-    .gfx-cat { font-size: 0.68rem; color: #d4a0b5; text-transform: uppercase; letter-spacing: 0.3px; }
-    .gfx-more { border: 2px dashed #f7c6d8; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 150px; cursor: pointer; transition: all 0.2s; gap: 6px; }
-    .gfx-more:hover { border-color: #ffb6c1; }
-    .gfx-more span:first-child { font-size: 1.5rem; }
-    .gfx-more span:last-child { font-size: 0.75rem; color: #d4a0b5; font-weight: 700; }
-
-    #gfx-popup { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.75); align-items: center; justify-content: center; padding: 1rem; }
-    #gfx-popup.open { display: flex; }
-    .popup-box { background: #fff6fa; border-radius: 20px; max-width: 500px; width: 100%; overflow: hidden; position: relative; }
-    .popup-img-wrap { width: 100%; background: #ffd6e7; display: flex; align-items: center; justify-content: center; min-height: 280px; }
-    .popup-img-wrap img { width: 100%; max-height: 380px; object-fit: contain; }
-    .popup-info { padding: 1.2rem 1.4rem; }
-    .popup-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #c45a8a; margin-bottom: 4px; }
-    .popup-cat { font-size: 0.78rem; color: #d4a0b5; text-transform: uppercase; letter-spacing: 0.5px; }
-    .popup-close { position: absolute; top: 12px; right: 12px; background: #ffb6c1; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1rem; cursor: pointer; color: #6b1f3c; font-weight: 800; display: flex; align-items: center; justify-content: center; }
-    .popup-close:hover { background: #f79ab5; }
-
-    .edu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
-    .edu-card { background: #fff; border: 1.5px solid #f7c6d8; border-radius: 16px; padding: 1.2rem; transition: all 0.2s; }
-    .edu-card:hover { border-color: #ffb6c1; transform: translateY(-2px); }
-    .edu-badge { display: inline-block; font-size: 0.65rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .badge-free { background: #e8f5e9; color: #2e7d32; }
-    .badge-premium { background: #fce4ec; color: #c2185b; }
-    .edu-level { display: inline-block; font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 20px; margin-bottom: 8px; margin-left: 4px; background: #fff6fa; color: #c45a8a; border: 1px solid #f7c6d8; text-transform: uppercase; }
-    .edu-title { font-size: 0.9rem; font-weight: 800; color: #c45a8a; margin-bottom: 6px; }
-    .edu-desc { font-size: 0.78rem; color: #a06080; line-height: 1.5; margin-bottom: 12px; }
-    .edu-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-    .edu-action { display: inline-flex; align-items: center; gap: 5px; border: none; border-radius: 12px; padding: 7px 14px; font-size: 0.78rem; font-family: 'Nunito', sans-serif; font-weight: 800; cursor: pointer; text-decoration: none; transition: background 0.2s; }
-    .btn-pdf { background: #ffb6c1; color: #6b1f3c; }
-    .btn-pdf:hover { background: #f79ab5; }
-    .btn-word { background: #c9e4ff; color: #1a3a5c; }
-    .btn-word:hover { background: #b0d4f7; }
-    .btn-premium { background: #fce4ec; color: #c2185b; }
-    .btn-premium:hover { background: #f8bbd0; }
-
-    #premium-popup { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; padding: 1rem; }
-    #premium-popup.open { display: flex; }
-    .premium-box { background: #fff6fa; border-radius: 20px; padding: 2rem; max-width: 340px; width: 100%; text-align: center; position: relative; }
-    .premium-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
-    .premium-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #c45a8a; margin-bottom: 8px; }
-    .premium-desc { font-size: 0.85rem; color: #a06080; line-height: 1.6; margin-bottom: 1.4rem; }
-    .premium-cta { display: inline-block; background: #ffb6c1; color: #6b1f3c; border-radius: 14px; padding: 10px 24px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.9rem; text-decoration: none; transition: background 0.2s; }
-    .premium-cta:hover { background: #f79ab5; }
-    .premium-close { position: absolute; top: 12px; right: 12px; background: #f0b8ce; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 0.9rem; cursor: pointer; color: #6b1f3c; font-weight: 800; display: flex; align-items: center; justify-content: center; }
   </style>
 </head>
 <body>
 
 <div id="overlay"></div>
-
-<div id="gfx-popup">
-  <div class="popup-box">
-    <button class="popup-close" onclick="closeGfxPopup()">✕</button>
-    <div class="popup-img-wrap" id="popup-img-wrap"></div>
-    <div class="popup-info">
-      <div class="popup-title" id="popup-title"></div>
-      <div class="popup-cat" id="popup-cat"></div>
-    </div>
-  </div>
-</div>
-
-<div id="premium-popup">
-  <div class="premium-box">
-    <button class="premium-close" onclick="closePremiumPopup()">✕</button>
-    <div class="premium-icon">🔒</div>
-    <div class="premium-title">File Premium</div>
-    <div class="premium-desc">File ini tersedia khusus untuk yang udah support~ Beli di Trakteer untuk unlock akses! 🌸</div>
-    <a class="premium-cta" href="https://trakteer.id/xxcuties" target="_blank">Beli di Trakteer 🩷</a>
-  </div>
-</div>
-
-<header id="ury-header">
-  <div class="header-logo" onclick="goHome()">uryaesque ✦</div>
-  <nav class="header-nav">
-    <button class="nav-btn" id="nav-gfx" onclick="showSection('gfx')">✦ GFX</button>
-    <button class="nav-btn" id="nav-edu" onclick="showSection('edu')"><i class="fi fi-rr-books"></i> EDU</button>
-    <button class="nav-btn home-btn" onclick="goHome()"><i class="fi fi-br-home-heart"></i> Home</button>
-  </nav>
-</header>
 
 <div id="scene-hero">
   <div class="deco-circle deco-1"></div>
@@ -176,17 +67,17 @@
   <div class="social-links">
     <a class="social-btn" href="https://www.instagram.com/kurogane.urya/" target="_blank"><i class="fi fi-brands-instagram"></i> Instagram</a>
     <a class="social-btn" href="https://github.com/Xxcuties" target="_blank"><i class="fi fi-brands-github"></i> GitHub</a>
-    <a class="social-btn" href="https://trakteer.id/xxcuties" target="_blank" style="background:#a8d8ea;color:#1a4a5c;">Trakteer</a>
+    <a class="social-btn" href="https://trakteer.id/xxcuties" target="_blank" style="background:#a8d8ea;color:#1a4a5c;">☕ Trakteer</a>
     <a class="social-btn" href="https://ru.pinterest.com/urya_sensei/" target="_blank" style="background:#e8b4c0;color:#6b1f3c;"><i class="fi fi-brands-pinterest"></i> Pinterest</a>
     <span class="social-btn disabled"><i class="fi fi-brands-discord"></i> Discord (soon)</span>
   </div>
   <div class="room-btns">
-    <div class="room-btn" onclick="enterRoom('gfx')">
+    <div class="room-btn" onclick="goTo('gfx.html')">
       <div class="room-btn-icon">🎨</div>
       <div class="room-btn-label">GFX</div>
       <div class="room-btn-sub">portfolio & works</div>
     </div>
-    <div class="room-btn" onclick="enterRoom('edu')">
+    <div class="room-btn" onclick="goTo('edu.html')">
       <div class="room-btn-icon">📚</div>
       <div class="room-btn-label">EDU</div>
       <div class="room-btn-sub">modul & latihan soal</div>
@@ -194,114 +85,26 @@
   </div>
 </div>
 
-<div id="scene-content">
-  <div class="section-panel" id="panel-gfx">
-    <h2 class="section-title">GFX Works</h2>
-    <p class="section-sub">anime graphic art & edits ✦</p>
-    <div class="gfx-grid" id="gfx-grid"></div>
-  </div>
-  <div class="section-panel" id="panel-edu">
-    <h2 class="section-title">Education</h2>
-    <p class="section-sub">modul ajar, latihan soal & bahan belajar ✦</p>
-    <div class="support-notice">
-      🌸 jangan lupa support aku dengan follow dan share postinganku yah owo~
-      <br><a href="https://www.instagram.com/kurogane.urya/" target="_blank">📸 @kurogane.urya</a>
-    </div>
-    <div class="edu-grid" id="edu-grid"></div>
-  </div>
-</div>
-
 <script>
-function renderGfx() {
-  const grid = document.getElementById('gfx-grid');
-  grid.innerHTML = '';
-  gfxWorks.forEach(work => {
-    const card = document.createElement('div');
-    card.className = 'gfx-card';
-    card.onclick = () => openGfxPopup(work);
-    card.innerHTML = `<div class="gfx-thumb"><img src="${work.file}" alt="${work.title}" onerror="this.style.display='none';this.parentNode.innerHTML='🎨'"></div><div class="gfx-info"><div class="gfx-name">${work.title}</div><div class="gfx-cat">${work.category}</div></div>`;
-    grid.appendChild(card);
+  // fade in dari transisi
+  window.addEventListener('load', () => {
+    const overlay = document.getElementById('overlay');
+    overlay.style.opacity = '1';
+    overlay.style.pointerEvents = 'all';
+    setTimeout(() => {
+      overlay.style.transition = 'opacity 0.5s';
+      overlay.style.opacity = '0';
+      overlay.style.pointerEvents = 'none';
+    }, 50);
   });
-  const more = document.createElement('div');
-  more.className = 'gfx-more';
-  more.onclick = () => window.open('https://www.instagram.com/kurogane.urya/', '_blank');
-  more.innerHTML = '<span>✦</span><span>more on IG</span>';
-  grid.appendChild(more);
-}
 
-function renderEdu() {
-  const grid = document.getElementById('edu-grid');
-  grid.innerHTML = '';
-  eduWorks.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'edu-card';
-    const badgeClass = item.type === 'free' ? 'badge-free' : 'badge-premium';
-    const badgeText = item.type === 'free' ? 'Gratis' : 'Premium';
-
-    let actionsHtml = '';
-    if (item.type === 'free') {
-      actionsHtml = `<div class="edu-actions">`;
-      if (item.filePdf) actionsHtml += `<a class="edu-action btn-pdf" href="${item.filePdf}" download><i class="fi fi-rr-file-download"></i> PDF</a>`;
-      if (item.fileWord) actionsHtml += `<a class="edu-action btn-word" href="${item.fileWord}" download><i class="fi fi-rr-file-download"></i> Word</a>`;
-      actionsHtml += `</div>`;
-    } else {
-      actionsHtml = `<div class="edu-actions"><button class="edu-action btn-premium" onclick="openPremiumPopup()">🔒 Beli di Trakteer</button></div>`;
-    }
-
-    card.innerHTML = `<span class="edu-badge ${badgeClass}">${badgeText}</span><span class="edu-level">${item.level}</span><div class="edu-title">${item.title}</div><div class="edu-desc">${item.desc}</div>${actionsHtml}`;
-    grid.appendChild(card);
-  });
-}
-
-function openGfxPopup(work) {
-  document.getElementById('popup-title').textContent = work.title;
-  document.getElementById('popup-cat').textContent = work.category;
-  document.getElementById('popup-img-wrap').innerHTML = `<img src="${work.file}" alt="${work.title}" onerror="this.style.display='none';this.parentNode.innerHTML='🎨'">`;
-  document.getElementById('gfx-popup').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeGfxPopup() { document.getElementById('gfx-popup').classList.remove('open'); document.body.style.overflow = ''; }
-function openPremiumPopup() { document.getElementById('premium-popup').classList.add('open'); document.body.style.overflow = 'hidden'; }
-function closePremiumPopup() { document.getElementById('premium-popup').classList.remove('open'); document.body.style.overflow = ''; }
-
-document.getElementById('gfx-popup').addEventListener('click', function(e) { if(e.target===this) closeGfxPopup(); });
-document.getElementById('premium-popup').addEventListener('click', function(e) { if(e.target===this) closePremiumPopup(); });
-
-function enterRoom(section) {
-  const overlay = document.getElementById('overlay');
-  overlay.classList.add('flash');
-  setTimeout(() => {
-    document.getElementById('scene-hero').style.display = 'none';
-    document.getElementById('ury-header').classList.add('visible');
-    const content = document.getElementById('scene-content');
-    content.style.display = 'block';
-    showSection(section);
-    renderGfx();
-    renderEdu();
-    setTimeout(() => { content.classList.add('visible'); overlay.classList.remove('flash'); }, 50);
-  }, 300);
-}
-
-function showSection(section) {
-  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-' + section).classList.add('active');
-  const nb = document.getElementById('nav-' + section);
-  if (nb) nb.classList.add('active');
-}
-
-function goHome() {
-  const overlay = document.getElementById('overlay');
-  overlay.classList.add('flash');
-  setTimeout(() => {
-    document.getElementById('scene-hero').style.display = 'flex';
-    document.getElementById('ury-header').classList.remove('visible');
-    const content = document.getElementById('scene-content');
-    content.style.display = 'none';
-    content.classList.remove('visible');
-    overlay.classList.remove('flash');
-  }, 300);
-}
+  function goTo(page) {
+    const overlay = document.getElementById('overlay');
+    overlay.style.transition = 'opacity 0.4s';
+    overlay.style.opacity = '1';
+    overlay.style.pointerEvents = 'all';
+    setTimeout(() => { window.location.href = page; }, 400);
+  }
 </script>
 </body>
 </html>
