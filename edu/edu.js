@@ -26,4 +26,12 @@ const eduWorks = [
         filePdf: "edu/pdf/foods.pdf",
         fileWord: "edu/word/foods.docx"
     },
+     {
+      id: 4,
+      title: "Grammar War for SVA & articles",
+      desc: "lesson plan materi SVA & article dengan model pendekatan perang antara kelompok besar!",
+      level: "SMA",
+      type: "premium",
+      trakteer: "https://trakteer.id/xxcuties"
+},
 ];
