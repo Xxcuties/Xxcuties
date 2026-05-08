@@ -12,33 +12,26 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Nunito', sans-serif; background: #fff6fa; min-height: 100vh; }
-
     #overlay { position: fixed; inset: 0; background: #ffb6c1; z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
     #overlay.flash { opacity: 1; pointer-events: all; }
-
     #scene-hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 2rem; position: relative; overflow: hidden; animation: fadeIn 0.5s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
     .deco-circle { position: absolute; border-radius: 50%; pointer-events: none; }
     .deco-1 { width: 220px; height: 220px; background: #ffd6e7; opacity: 0.4; top: -70px; right: -50px; }
     .deco-2 { width: 130px; height: 130px; background: #ffb6c1; opacity: 0.25; bottom: 60px; left: -40px; }
     .deco-3 { width: 80px; height: 80px; background: #ffd6e7; opacity: 0.3; top: 80px; left: 30px; }
-
     .hero-logo-wrap { margin-bottom: 1.2rem; position: relative; display: flex; align-items: center; justify-content: center; }
     .hero-logo-img { width: 110px; height: 110px; border-radius: 50%; border: 3px solid #ffb6c1; background: #ffd6e7; display: flex; align-items: center; justify-content: center; font-size: 3rem; overflow: hidden; }
     .hero-logo-img img { width: 100%; height: 100%; object-fit: cover; }
     .hero-logo-ring { width: 126px; height: 126px; border-radius: 50%; border: 2px dashed #f7c6d8; position: absolute; animation: spin 12s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .hero-name { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; color: #c45a8a; text-align: center; margin-bottom: 4px; }
     .hero-handle { font-size: 0.85rem; color: #d4a0b5; margin-bottom: 0.8rem; letter-spacing: 1px; }
     .hero-bio { font-size: 0.9rem; color: #a06080; text-align: center; max-width: 280px; line-height: 1.7; margin-bottom: 1.6rem; }
-
     .social-links { display: flex; gap: 10px; margin-bottom: 2.2rem; flex-wrap: wrap; justify-content: center; }
     .social-btn { background: #ffb6c1; border: none; border-radius: 20px; padding: 8px 18px; font-size: 13px; font-family: 'Nunito', sans-serif; font-weight: 800; color: #6b1f3c; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; text-decoration: none; }
     .social-btn:hover { background: #f79ab5; transform: translateY(-2px); }
     .social-btn.disabled { background: #e0e0e0; color: #aaa; cursor: not-allowed; pointer-events: none; }
-
     .room-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
     .room-btn { background: #fff; border: 2px solid #f7c6d8; border-radius: 18px; padding: 1.4rem 2rem; cursor: pointer; text-align: center; transition: all 0.25s; min-width: 140px; }
     .room-btn:hover { border-color: #ffb6c1; transform: translateY(-4px); box-shadow: 0 10px 24px rgba(255,182,193,0.35); }
@@ -47,15 +40,6 @@
     .room-btn-sub { font-size: 0.72rem; color: #d4a0b5; margin-top: 3px; }
   </style>
 </head>
-  </div>
-
-    <footer style="text-align:center; padding: 1rem; font-size:0.65rem; color:#d4a0b5;">
-      <a href="credits.html" style="color:#d4a0b5; text-decoration:none;">credits & attributions ✦</a>
-    </footer>
-
-  </div>
-
-  <script>
 <body>
 
 <div id="overlay"></div>
@@ -82,7 +66,7 @@
   </div>
   <div class="room-btns">
     <div class="room-btn" onclick="goTo('gfx.html')">
-     <div class="room-btn-icon"><img src="heart.png" style="width:50px;height:50px;object-fit:contain;"></div>
+      <div class="room-btn-icon"><img src="heart.png" style="width:50px;height:50px;object-fit:contain;"></div>
       <div class="room-btn-label">GFX</div>
       <div class="room-btn-sub">portfolio & works</div>
     </div>
@@ -94,8 +78,11 @@
   </div>
 </div>
 
+<footer style="text-align:center; padding: 1rem; font-size:0.65rem; color:#d4a0b5;">
+  <a href="credits.html" style="color:#d4a0b5; text-decoration:none;">credits & attributions ✦</a>
+</footer>
+
 <script>
-  // fade in dari transisi
   window.addEventListener('load', () => {
     const overlay = document.getElementById('overlay');
     overlay.style.opacity = '1';
