@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback — uryaesque</title>
+  <link rel="icon" href="logo.gif" type="image/gif">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #fff6fa; min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 2rem 1rem;
+    }
+    .deco-circle { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; }
+    .deco-1 { width: 220px; height: 220px; background: #ffd6e7; opacity: 0.4; top: -70px; right: -50px; }
+    .deco-2 { width: 130px; height: 130px; background: #ffb6c1; opacity: 0.25; bottom: 60px; left: -40px; }
+
+    .card {
+      background: #fff; border: 2px solid #f7c6d8;
+      border-radius: 24px; padding: 2rem 1.8rem;
+      width: 100%; max-width: 420px;
+      position: relative; z-index: 1;
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .logo-wrap { display: flex; flex-direction: column; align-items: center; margin-bottom: 1.6rem; }
+    .logo-img { width: 65px; height: 65px; border-radius: 50%; border: 2.5px solid #ffb6c1; overflow: hidden; background: #ffd6e7; margin-bottom: 8px; }
+    .logo-img img { width: 100%; height: 100%; object-fit: cover; }
+    .logo-name { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; color: #c45a8a; font-weight: 700; }
+    .logo-sub { font-size: 0.75rem; color: #d4a0b5; margin-top: 2px; text-align: center; }
+
+    .field { margin-bottom: 1.1rem; }
+    label { display: block; font-size: 0.72rem; font-weight: 800; color: #c45a8a; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+    input[type="text"], select, textarea {
+      width: 100%; background: #fff6fa;
+      border: 1.5px solid #f0b8ce; border-radius: 12px;
+      padding: 10px 14px; font-family: 'Nunito', sans-serif;
+      font-size: 0.92rem; color: #5c3d4a; outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus, textarea:focus { border-color: #c45a8a; background: #fff; }
+    textarea { height: 90px; resize: vertical; }
+
+    /* STRAWBERRY SLIDER */
+    .rating-wrap { display: flex; flex-direction: column; gap: 10px; }
+
+    .berry-display {
+      text-align: center; font-size: 1.6rem;
+      min-height: 36px; letter-spacing: 2px;
+    }
+
+    .score-label {
+      text-align: center; font-size: 0.82rem;
+      color: #d4a0b5; font-weight: 700;
+    }
+    .score-label span { color: #c45a8a; font-size: 1rem; }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%; height: 6px;
+      background: linear-gradient(to right, #f9c6d8 0%, #f9c6d8 50%, #f0e0e8 50%);
+      border-radius: 99px; outline: none;
+      cursor: pointer; border: none; padding: 0;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px; height: 24px;
+      background: #fff;
+      border: 2px solid #f0b8ce;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 2px 6px rgba(255,182,193,0.4);
+      transition: border-color 0.2s;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      border-color: #c45a8a;
+    }
+
+    .submit-btn {
+      width: 100%; background: #ffb6c1; color: #6b1f3c;
+      border: none; border-radius: 14px; padding: 13px;
+      font-family: 'Nunito', sans-serif; font-weight: 800;
+      font-size: 1rem; cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 0.6rem;
+    }
+    .submit-btn:hover { background: #f79ab5; }
+    .submit-btn:active { transform: scale(0.97); }
+    .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    .success { display: none; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+    .success-icon { font-size: 3rem; }
+    .success-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #c45a8a; }
+    .success-sub { font-size: 0.82rem; color: #d4a0b5; line-height: 1.6; }
+
+    .hearts-container { position: fixed; inset: 0; pointer-events: none; overflow: hidden; display: none; z-index: 99; }
+    .heart { position: absolute; bottom: -30px; animation: floatUp 2.2s ease-out forwards; }
+    @keyframes floatUp { to { transform: translateY(-110vh) rotate(20deg); opacity: 0; } }
+  </style>
+</head>
+<body>
+
+<div class="deco-circle deco-1"></div>
+<div class="deco-circle deco-2"></div>
+<div class="hearts-container" id="hearts"></div>
+
+<div class="card">
+  <div class="logo-wrap">
+    <div class="logo-img">
+      <img src="logo.gif" alt="uryaesque" onerror="this.style.display='none';this.parentNode.innerHTML='🌸'">
+    </div>
+    <div class="logo-name">uryaesque</div>
+    <div class="logo-sub">how was your experience?<br>your feedback means a lot~ 🌸</div>
+  </div>
+
+  <div id="form-area">
+    <div class="field">
+      <label for="nama">Your Name</label>
+      <input type="text" id="nama" placeholder="Nickname or full name...">
+    </div>
+
+    <div class="field">
+      <label for="services">Service</label>
+      <select id="services">
+        <option value="" disabled selected>Which service did you use?</option>
+        <option value="Poster">🎨 Poster</option>
+        <option value="Virtual Assistant">🎙️ Virtual Assistant</option>
+        <option value="Translate / Localization">🌐 Translate / Localization</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Rating</label>
+      <div class="rating-wrap">
+        <div class="berry-display" id="berry-display">🍓🍓🍓🍓🍓</div>
+        <input type="range" id="score-slider" min="0.5" max="5" step="0.5" value="2.5" oninput="updateRating()">
+        <div class="score-label" id="score-label"><span>2.5</span> / 5.0 😐</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="komentar">Comments</label>
+      <textarea id="komentar" placeholder="Tell me what you think... good or bad, I appreciate it! 🌸"></textarea>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="submitFeedback()">Send Feedback 🍓</button>
+  </div>
+
+  <div class="success" id="success-area">
+    <div class="success-icon">🍓</div>
+    <div class="success-title">Thank you so much!</div>
+    <div class="success-sub">Your feedback has been received~<br>It really means a lot to me 🩷</div>
+  </div>
+</div>
+
+<script>
+  const APPS_SCRIPT_URL = 'GANTI_DENGAN_URL_APPSCRIPT_SUBMITME';
+
+  function updateRating() {
+    const slider = document.getElementById('score-slider');
+    const val = parseFloat(slider.value);
+
+    // update gradient slider
+    const pct = ((val - 0.5) / 4.5) * 100;
+    slider.style.background = `linear-gradient(to right, #f9c6d8 0%, #f9c6d8 ${pct}%, #f0e0e8 ${pct}%)`;
+
+    // strawberry display
+    const full = Math.floor(val);
+    const half = val % 1 !== 0;
+    const empty = 5 - full - (half ? 1 : 0);
+    const display = '🍓'.repeat(full) + (half ? '🫐' : '') + '🤍'.repeat(empty);
+    document.getElementById('berry-display').textContent = display;
+
+    // emoji mood
+    const mood = val <= 1 ? '😢' : val <= 2 ? '😕' : val <= 3 ? '😐' : val <= 4 ? '🙂' : val <= 4.5 ? '😊' : '🥰';
+    document.getElementById('score-label').innerHTML = `<span>${val}</span> / 5.0 ${mood}`;
+  }
+
+  // init
+  updateRating();
+
+  async function submitFeedback() {
+    const nama = document.getElementById('nama').value.trim();
+    const services = document.getElementById('services').value;
+    const score = document.getElementById('score-slider').value;
+    const komentar = document.getElementById('komentar').value.trim();
+    const btn = document.getElementById('submit-btn');
+
+    if (!nama || !services) {
+      btn.textContent = 'Lengkapi nama & service dulu! 🙈';
+      btn.style.background = '#f0b8ce';
+      setTimeout(() => { btn.textContent = 'Send Feedback 🍓'; btn.style.background = ''; }, 2500);
+      return;
+    }
+
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    const formData = new FormData();
+    formData.append('type', 'feedback');
+    formData.append('nama', nama);
+    formData.append('services', services);
+    formData.append('score', score);
+    formData.append('komentar', komentar);
+
+    try {
+      await fetch(APPS_SCRIPT_URL, { method: 'POST', body: formData });
+      document.getElementById('form-area').style.display = 'none';
+      document.getElementById('success-area').style.display = 'flex';
+      spawnHearts();
+    } catch (err) {
+      btn.textContent = 'Failed, try again 😢';
+      btn.style.background = '#f0b8ce';
+      btn.disabled = false;
+      setTimeout(() => { btn.textContent = 'Send Feedback 🍓'; btn.style.background = ''; }, 3000);
+    }
+  }
+
+  function spawnHearts() {
+    const container = document.getElementById('hearts');
+    container.style.display = 'block';
+    const emojis = ['🍓','🩷','✨','🌸','💖'];
+    for (let i = 0; i < 20; i++) {
+      const h = document.createElement('div');
+      h.className = 'heart';
+      h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      h.style.left = Math.random() * 100 + 'vw';
+      h.style.animationDelay = (Math.random() * 1.2) + 's';
+      h.style.fontSize = (0.9 + Math.random() * 0.9) + 'rem';
+      container.appendChild(h);
+    }
+    setTimeout(() => { container.style.display = 'none'; container.innerHTML = ''; }, 3000);
+  }
+</script>
+</body>
+</html>
